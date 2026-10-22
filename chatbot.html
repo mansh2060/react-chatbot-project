@@ -23,17 +23,6 @@
       }
 
       function ChatMessage({message,sender}) {
-        //const {message,sender} = props;
-        /*
-        if (sender === 'robot') {
-          return (  
-            <div>
-              <img src="robot.png" width="50" />
-              {message}
-            </div>
-          )
-        }
-        */
         return (
           <div>
             {sender === 'robot' && (<img src="robot.png" width="50" />)}
@@ -43,32 +32,42 @@
         );
       }
 
-      function App() {
-        
+      function ChatReplies() {
         const chatMessages = [
           {
             message : "hello chatbot",
-            sender : "user"
+            sender : "user",
+            id : 'id1'
           },
           {
             message : "Hello!How can i help you ?",
-            sender : "robot"
+            sender : "robot",
+            id : 'id2'
           },
 
         ];
-
         return (
           <>
-            <ChatInput />
             {chatMessages.map((chatMessage) => {
             return (
                 <ChatMessage
                   message = {chatMessage.message}
                   sender = {chatMessage.sender}
-
+                  key = { chatMessage.id }
                 />
               )
-            })}; 
+            })}
+          </>
+        ); 
+        
+      }
+
+      function App() {
+        return (
+          <>
+            <ChatInput />
+            <ChatReplies />
+            
           </>
         );
       }
