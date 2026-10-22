@@ -26,7 +26,7 @@
         //const {message,sender} = props;
         /*
         if (sender === 'robot') {
-          return (
+          return (  
             <div>
               <img src="robot.png" width="50" />
               {message}
@@ -38,23 +38,46 @@
           <div>
             {sender === 'robot' && (<img src="robot.png" width="50" />)}
             {message}
-            {sender === 'user' && (<img src="user.png" width="50" />) }
+            {sender === 'user' && (<img src="user.png" width="50" />)   }
           </div> 
         );
       }
-      const app = (
-        <>
-          <ChatInput />
-          <ChatMessage message="hello chatbot" sender="user"  />
-          <ChatMessage message="Hello!How can i help you ?" sender="robot" />
-        </>
-      );
+
+      function App() {
+        
+        const chatMessages = [
+          {
+            message : "hello chatbot",
+            sender : "user"
+          },
+          {
+            message : "Hello!How can i help you ?",
+            sender : "robot"
+          },
+
+        ];
+
+        return (
+          <>
+            <ChatInput />
+            {chatMessages.map((chatMessage) => {
+            return (
+                <ChatMessage
+                  message = {chatMessage.message}
+                  sender = {chatMessage.sender}
+
+                />
+              )
+            })}; 
+          </>
+        );
+      }
       
       
       const container = document.querySelector('.js-container');
 
 
-      ReactDOM.createRoot(container).render(app);
+      ReactDOM.createRoot(container).render(<App />);
     </script>
   </body>
 </html>
