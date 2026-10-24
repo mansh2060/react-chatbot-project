@@ -194,19 +194,7 @@
       }
 
       function App() {
-        const [chatMessages,setChatMessages] = React.useState([
-          {
-            message : "hello chatbot",
-            sender : "user",
-            id : 'id1'
-          },
-          {
-            message : "Hello!How can i help you ?",
-            sender : "robot",
-            id : 'id2'
-          },
-
-        ]);
+        const [chatMessages,setChatMessages] = React.useState([]);
         return (
             <div className="app-container">
               
