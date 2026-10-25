@@ -84,6 +84,10 @@
         scrollbar-width: none;
         
       }
+
+      .css-spinner{
+        width :50px;
+      }
     </style>
   </head>
   <body>
@@ -101,6 +105,8 @@
 
         const [inputText,setInputText] = React.useState('');
 
+        const [isLoading,setLoading] = React.useState(false);
+
         function saveInputText(event) {
           setInputText(event.target.value);
         }
@@ -115,10 +121,13 @@
             }
           ];
 
+          setLoading(true);
           setChatMessages(newChatMessages);
-          
-          const response = Chatbot.getResponse(inputText);
-          setChatMessages([
+
+          setTimeout(() => {
+            const response = Chatbot.getResponse(inputText);
+
+            setChatMessages([
             ...newChatMessages,
             {
               message:response,
@@ -126,6 +135,10 @@
               id:crypto.randomUUID()
             }
           ]);
+
+            setLoading(false);
+
+          },3000);
 
           setInputText('');
         }
@@ -143,7 +156,7 @@
         );
       }
 
-      function ChatMessage({message,sender}) {
+      function ChatMessage({message,sender,isLoading}) {
         return (
           <div className={sender === 'user' 
           ? 'chat-message-user' 
@@ -151,6 +164,9 @@
            }>
             {sender === 'robot' && (<img src="robot.png"
             className = "chat-message-profile"
+            />)}
+            {isLoading && (<img src="loadingspinner.jpg" 
+            className = "css-spinner"
             />)}
             <div className="chat-message-text">
               {message}
@@ -184,6 +200,7 @@
                   message = {chatMessage.message}
                   sender = {chatMessage.sender}
                   key = { chatMessage.id }
+                  
                   
                 />
               )
