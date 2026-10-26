@@ -3,6 +3,72 @@
   <head>
     <title>React Basics</title>
   </head>
+  <style>
+    body{
+      background-color: aqua;
+    }
+    .css-button-off,.css-button-on{
+      color: white;
+      border:none;
+      border-radius:5px;
+      width: 40px;
+      height: 40px;
+      padding: 5px;
+
+    }
+    .css-button-on{
+      background-color: rgb(25,134,84);
+    }
+    .css-button-off{
+      background-color: rgb(220,53,69);
+    }
+
+    .css-input-container{
+      margin-top: 20px;
+    }
+    
+    .css-password{
+      border:solid;
+      width: 150px;
+      padding: 12px 15px
+    }
+
+    .css-show-button{
+      margin-left: 5px;
+      background-color: blue;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+    }
+    
+    .css-counter-container{
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+      background-color: rgb(222,222,222);
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .css-counter-button,
+    .css-counter-reset-button,
+    .css-autoclick-button{
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      border-radius: 10px;
+    }
+
+    .css-counter-reset-button{
+      margin-left: 10px;
+    }
+    .css-autoclick-button{
+      margin-left: 10px;
+    }
+
+  </style>
   <body>
     <div class="js-container"></div>
 
@@ -11,22 +77,97 @@
 
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
+      function ButtonState() {
+        const [isButtonOn,setIsButtonOn] = React.useState(false);
 
-      const button = <button>Hello</button>
+        return (
+          <button className={isButtonOn ? 'css-button-off' : 'css-button-on'}
+          onClick = {() => setIsButtonOn(!isButtonOn) }
+          
+          >{isButtonOn ? 'OFF' : 'ON'}</button>
+        );
 
-      const para = <p>Paragraph of text</p>
+      }
+
+      function PasswordState() {
+        const [isVisible,setisVisible] = React.useState(false);
+
+        const [inputText,setinputText] = React.useState('');
+        return (
+          <div className="css-input-container">
+            <input type= {isVisible ? 'text' : 'password'}
+            className = "css-password"
+            placeholder = "Password"
+            onChange = {(event) => {
+              setinputText(event.target.value);
+            }}
+            
+            />
+            <button 
+            className = "css-show-button"
+            onClick = {() => setisVisible(!isVisible)}
+            >{isVisible ? 'Hide' : 'Show'}</button>
+          
+          </div>
+          
+        )
+      }
 
 
-      const div = (
-        <div>
-          <button>Hello</button>
-          <p>Paragraph of text</p>
-        </div>
-      );
+      function CounterState() {
+        const [count,setCount] = React.useState(0);
+        const intervalRef = React.useRef(null);
+        return (
+          <div className = "css-counter-container">
+            <button 
+            onClick = {() => {
+              setCount((previousCount) => previousCount + 1 );
+            }}
+            className = "css-counter-button"
+            >Clicked {count} times</button>
+
+            <button
+            className = "css-counter-reset-button"
+            onClick = {() => {
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+              setCount(0);
+            }}
+            >
+            Reset
+            </button>
+
+
+            <button
+            className = "css-autoclick-button"
+            onClick = {() => {
+              intervalRef.current = setInterval(() => {
+                setCount(previousCount => previousCount + 1 );
+              },1000);
+            }}
+            >
+            AutoClick
+            </button>
+          </div>
+        )
+      }
+      
+      function App() {
+        return (
+          <div >
+            <ButtonState />
+            <PasswordState />
+            <CounterState />
+          </div>
+          
+        );
+        
+      }
+
       const container = document.querySelector('.js-container');
 
 
-      ReactDOM.createRoot(container).render(div);
+      ReactDOM.createRoot(container).render(<App />);
     </script>
   </body>
 </html>
